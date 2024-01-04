@@ -155,15 +155,17 @@ void list::swMinMax()
     {
         if (current->data > max->data)
             max = current;
-        if (current->data < min->data)
+        else if (current->data < min->data)
             min = current;
         current = current->nextN;
     }
-    swap(min, max);
+    swapData(min, max);
 }
 
 void list::swapElement(Node* before, Node* befCurrent)
 {
+    if (this->size < 2)
+        return;
     if (before->nextN == befCurrent)
     {
         this->swapData(before->nextN, befCurrent->nextN);
@@ -192,7 +194,7 @@ void list::sort()
         {
             if (buf->nextN->data > current->nextN->data)
             {
-                this->swapElement(buf, current);
+                this->swapData(buf, current);
                 break;
             }
         }
@@ -258,22 +260,22 @@ int main()
     bool language = true, entr = true;
     int size1 = 0, size2 = 6;
     cout << "Enter the language,\n0 - Ru, 1 - En\n";
-    //size1 = EntrEdge(size1, 0, 1, language);
+    size1 = EntrEdge(size1, 0, 1, language);
     language = size1;
 
     if (language)
-        cout << "Enter values from the keyboard - 1, use the prepared values - 0";
+        cout << "Enter values from the keyboard - 1, use the prepared values - 0" << endl;
     else
-        cout << "Ввести значения с клавиатуры - 1, воспользоваться заготовленными значениями - 0";
-    //size1 = EntrEdge(size1, 0, 1, language);
-    //entr = size1;
+        cout << "Ввести значения с клавиатуры - 1, воспользоваться заготовленными значениями - 0" << endl;
+    size1 = EntrEdge(size1, 0, 1, language);
+    entr = size1;
 
     if (language)
         cout << "Enter the length of the list and its values\n size = ";
     else
         cout << "Введите длину списка и его значения\n size = ";
 
-    size1 = EntrEdge(size1, 0, INT_MAX, language);
+    size1 = EntrEdge(size1, 1, INT_MAX, language);
     list lst1;
     list lst2;
 
@@ -281,13 +283,14 @@ int main()
         lst1.addBeg(size1, language);
     else
     {
-        for (int i = size2 - 1; i >= 0; i--)
+        for (int i = size1 - 1; i >= 0; i--)
         {
             lst1.addOne(rand() % 30 - 10);
         }
-        cout << "lst1 =\n";
-        lst1.cOut();
     }
+
+    cout << "lst1 =\n";
+    lst1.cOut();
 
     //======= swap max & min ========
     lst1.swMinMax();
@@ -323,12 +326,14 @@ int main()
         cout << "The top element of the stack" << endl;
     else
         cout << "Верхний элемент стека" << endl;
-    cout << lst2.getHead();
+    cout << lst2.getHead() << endl;
 
     if (language)
         cout << "Removing the top element of the stack" << endl; ///=====================
     else
         cout << "Удаление верхнего элемента стека" << endl;
+    lst2.pop();
+    lst2.cOut();
 
     /*lst1.sort();
     if (language)
@@ -366,7 +371,7 @@ int main()
             cout << "Enter the dimension of the graph" << endl;
         else
             cout << "Введите размерность графа" << endl;
-        size1 = EntrEdge(size1, 1, 100, language);
+        size1 = EntrEdge(size1, 1, INT_MAX, language);
         graph.resize(size1);
         for (int i = 0; i < size1; i++)
             graph[i].resize(size1);
@@ -431,7 +436,6 @@ int main()
         cout << "Поиск в глубину\n";
     
     dfs(visited, graph);
-    cout << "this\n";
 
     //-------- bfs --------
     visited = vector<bool>(graph.size(), 0);
@@ -455,10 +459,10 @@ int main()
             cout << "Enter the dimension of the graph" << endl;
         else
             cout << "Введите размерность графа" << endl;
-        size1 = EntrEdge(size1, 1, 100, language);
-        graph.resize(size1);
+        size1 = EntrEdge(size1, 1, INT_MAX, language);
+        graph2.resize(size1);
         for (int i = 0; i < size1; i++)
-            graph[i].resize(size1);
+            graph2[i].resize(size1);
         cout << endl;
 
         if (language)
@@ -473,12 +477,11 @@ int main()
             {
                 if (i == j)
                 {
-                    graph[i][j] = 0;
-                    cout << graph[i][j] << " ";
+                    graph2[i][j] = 0;
+                    cout << graph2[i][j] << " ";
                     continue;
                 }
-                graph[i][j] = EntrEdge(graph[i][j], 0, 1, language);
-                graph[j][i] = graph[i][j];
+                graph2[i][j] = EntrEdge(graph2[i][j], INT_MIN, INT_MAX, language);
             }
             cout << endl;
         }
@@ -487,7 +490,7 @@ int main()
     {
         graph2.resize(4);
         for (int i = 0; i < graph2.size(); i++)
-            graph[i].resize(graph2.size());
+            graph2[i].resize(graph2.size());
             graph2 =
         {
             {0, 0, 0, 1},
@@ -502,11 +505,11 @@ int main()
         cout << "Enter the values of the graph elements" << endl;
     else
         cout << "\nГраф" << endl;
-    for (int i = 0; i < graph.size(); i++)
+    for (int i = 0; i < graph2.size(); i++)
     {
-        for (int j = 0; j < graph.size(); j++)
+        for (int j = 0; j < graph2.size(); j++)
         {
-            cout << graph[i][j] << " ";
+            cout << graph2[i][j] << " ";
         }
         cout << endl;
     }
