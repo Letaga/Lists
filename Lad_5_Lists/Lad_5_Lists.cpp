@@ -11,13 +11,10 @@ int EntrEdge(int x, int l, int r, bool language) //Checking the validity of valu
     while (y < l || y > r)
     {
         if (language)
-        {
             cout << "Enter another number\n";
-        }
         else
-        {
             cout << "Введите другое число\n";
-        }
+
         cin >> y;
     }
     x = y;
@@ -54,7 +51,6 @@ public:
     {
         return size;
     }
-
     int getHead()
     {
         return head->data;
@@ -67,6 +63,7 @@ public:
         head = head->nextN;
         delete tmp;
         }
+        size--;
     }
     bool empty()
     {
@@ -77,10 +74,10 @@ public:
     void addBeg(int nAdd, bool language); //Add n node to the begging
     void cOut(); //Output list on the console
     void sort(); //Sorting a simple insert
-    void swap(Node* N1, Node* N2);
+    void swapData(Node* N1, Node* N2);
     void swMinMax();
     void sum(list L);
-    void insertSwap(Node* before, Node* befCurrent);
+    void swapElement(Node* before, Node* befCurrent);
     void sum2(list L);
 
 
@@ -140,7 +137,7 @@ void list::cOut()
     cout << endl;
 }
 
-void list::swap(Node* N1, Node* N2)
+void list::swapData(Node* N1, Node* N2)
 {
     int tmp = N1->data;
     N1->data = N2->data;
@@ -163,11 +160,11 @@ void list::swMinMax()
     swap(min, max);
 }
 
-void list::insertSwap(Node* before, Node* befCurrent)
+void list::swapElement(Node* before, Node* befCurrent)
 {
     if (before->nextN == befCurrent)
     {
-        this->swap(before->nextN, befCurrent->nextN);
+        this->swapData(before->nextN, befCurrent->nextN);
         return;
     }
     Node* tmp = befCurrent->nextN->nextN;
@@ -185,7 +182,7 @@ void list::sort()
     {
         if (head->data > current->nextN->data)
         {
-            this->insertSwap(head, current);
+            this->swapElement(head, current);
             current = current->nextN;
             continue;
         }
@@ -193,7 +190,7 @@ void list::sort()
         {
             if (buf->nextN->data > current->nextN->data)
             {
-                this->insertSwap(buf, current);
+                this->swapElement(buf, current);
                 break;
             }
         }
@@ -257,7 +254,7 @@ int main()
     srand(time(0));
 
     bool language = true, entr = true;
-    int size1 = 0, size2 = 5;
+    int size1 = 0, size2 = 6;
     cout << "Enter the language,\n0 - Ru, 1 - En\n";
     //size1 = EntrEdge(size1, 0, 1, language);
     language = size1;
@@ -267,14 +264,14 @@ int main()
     else
         cout << "Ввести значения с клавиатуры - 1, воспользоваться заготовленными значениями - 0";
     //size1 = EntrEdge(size1, 0, 1, language);
-    entr = size1;
+    //entr = size1;
 
     if (language)
         cout << "Enter the length of the list and its values\n size = ";
     else
         cout << "Введите длину списка и его значения\n size = ";
 
-    size1 = EntrEdge(size1, 0, INT_MAX, language);
+    /*size1 = EntrEdge(size1, 0, INT_MAX, language);
     list lst1;
     list lst2;
 
@@ -290,23 +287,46 @@ int main()
         lst1.cOut();
     }
 
-    if (language)
-        cout << "Adding an item with a value of 5 to the list" << endl;
-    else
-        cout << "Добавление элемента со значением 5 в список" << endl;
-
-    lst1.addOne(5);
-
-
-    for (int i = size2 - 1; i >= 0; i--)
-        lst2.addOne(i + 5);
-
+    //======= swap max & min ========
     lst1.swMinMax();
     if (language)
         cout << "The specified list after permutation of the minimum and maximum elements" << endl;
     else
         cout << "Заданный список после перестановки минимального и максимального элементов" << endl;
     lst1.cOut();
+
+    //========   list implementation   ========
+    if (language)
+        cout << "Adding an element with a value of 5 to the top of the stack" << endl;
+    else
+        cout << "Добавление элемента со значением 5 в верх стека" << endl;
+
+    lst1.addOne(5);
+    lst1.cOut();
+
+    if (language)
+        cout << "The current size of the list" << endl;
+    else
+        cout << "Текуший размер списка" << endl;
+
+    cout << lst1.getSize() << endl;
+
+    for (int i = size2 - 1; i >= 0; i--)
+        lst2.addOne(i + 5);
+
+    cout << "list 2 = " << endl;
+    lst2.cOut();
+
+    if (language)
+        cout << "The top element of the stack" << endl;
+    else
+        cout << "Верхний элемент стека" << endl;
+    cout << lst2.getHead();
+
+    if (language)
+        cout << "Removing the top element of the stack" << endl; ///=====================
+    else
+        cout << "Удаление верхнего элемента стека" << endl;*/
 
     /*lst1.sort();
     if (language)
@@ -316,8 +336,6 @@ int main()
 
     lst1.cOut();*/
 
-    cout << "list 2 = " << endl;
-    lst2.cOut();
 
     /*lst1.sum2(lst2);
     if (language)
@@ -339,7 +357,6 @@ int main()
     else
         cout << "\n===========   Графы   ===========" << endl;
 
-    //-------  dfs --------
     vector<vector<int>> graph;
     if (entr)
     {
@@ -352,18 +369,26 @@ int main()
         for (int i = 0; i < size1; i++)
             graph[i].resize(size1);
         cout << endl;
+
+        if (language)
+            cout << "Enter the values of the graph elements" << endl;
+        else
+            cout << "Введите значения элементов графа" << endl;
         for (int i = 0; i < size1; i++)
         {
-            cout << i << ". ";
+            cout << i+1 << ". ";
             for (int j = 0; j < i; j++)
                 cout << graph[i][j] << " ";
             for (int j = i; j < size1; j++)
             {
                 if (i == j)
                 {
-
+                    graph[i][j] = 0;
+                    cout << graph[i][j] << " ";
+                    continue;
                 }
-                cout << graph[i][j] << " ";
+                cin >> graph[i][j];
+                graph[j][i] = graph[i][j];
             }
             cout << endl;
         }
@@ -380,24 +405,31 @@ int main()
             {0, 1, 1, 0, 0},
             {1, 0, 0, 0, 0}
         };
-        cout << "graph =\n";
-        for (int i = 0; i < graph.size(); i++)
-        {
-            for (int j = 0; j < graph.size(); j++)
-            {
-                cout << graph[i][j] << " ";
-            }
-            cout << endl;
-        }
     }
     vector <bool> visited(graph.size(), 0);
 
+    //===============  graph output  ===============
+    if (language)
+        cout << "Enter the values of the graph elements" << endl;
+    else
+        cout << "\nГраф" << endl;
+    for (int i = 0; i < graph.size(); i++)
+    {
+        for (int j = 0; j < graph.size(); j++)
+        {
+            cout << graph[i][j] << " ";
+        }
+        cout << endl;
+    }
+
+    //-------  dfs --------
     if (language)
         cout << "dfs\n";
     else
         cout << "Поиск в глубину\n";
     
     dfs(visited, graph);
+    cout << "this\n";
 
     //-------- bfs --------
     visited = vector<bool>(graph.size(), 0);
@@ -405,78 +437,77 @@ int main()
         cout << "bfs\n";
     else
         cout << "Поиск в ширину\n";
-
+     
     bfs(visited, graph);
-
+     
     //-------- topological --------
     vector <int> tSort;
     cout << "size = " << tSort.size() << endl;
     for (int x : tSort)
         cout << x << " ";
-
-    vector<vector<int>> graph2 =
+     
+    vector<vector<int>> graph2;
+    if (entr)
     {
-        {0, 0, 0, 1},
-        {0, 0, 0, 0},
-        {0, 1, 0, 0},
-        {0, 1, 1, 0}
-    };
+        if (language)
+            cout << "Enter the dimension of the graph" << endl;
+        else
+            cout << "Введите размерность графа" << endl;
+        size1 = EntrEdge(size1, 1, 100, language);
+        graph.resize(size1);
+        for (int i = 0; i < size1; i++)
+            graph[i].resize(size1);
+        cout << endl;
 
+        if (language)
+            cout << "Enter the values of the graph elements" << endl;
+        else
+            cout << "Введите значения элементов графа" << endl;
+        for (int i = 0; i < size1; i++)
+        {
+            cout << i + 1 << ". ";
+            for (int j = 0; j < size1; j++)
+            {
+                if (i == j)
+                {
+                    graph[i][j] = 0;
+                    cout << graph[i][j] << " ";
+                    continue;
+                }
+                graph[i][j] = EntrEdge(graph[i][j], INT_MIN, INT_MAX, language);
+                graph[j][i] = graph[i][j];
+            }
+            cout << endl;
+        }
+    }
+    else
+    {
+        graph2.resize(4);
+        for (int i = 0; i < graph2.size(); i++)
+            graph[i].resize(graph2.size());
+            graph2 =
+        {
+            {0, 0, 0, 1},
+            {0, 0, 0, 0},
+            {0, 1, 0, 0},
+            {0, 1, 1, 0}
+        };
+    }
+     
     vector <bool> visited2(graph2.size(), 0);
     if (language)
         cout << "Topological sorting\n";
     else
         cout << "Топологическая сортировка\n";
-
+     
     toplogical(visited2, graph2, tSort, 0);
-
-
-
-
-    /*
-    vector<vector<int>> graph =
-    {
-        {0, 1, 0, 0, 1},
-        {1, 0, 1, 1, 0},
-        {0, 1, 0, 1, 0},
-        {0, 1, 1, 0, 0},
-        {1, 0, 0, 0, 0}
-    };
-    vector <bool> visited(graph.size(), 0);
-
-    dfs(visited, graph, 0);
-    visited = vector<bool>(graph.size(), 0);
-    cout << "dfsI\n";
-    dfsI(visited, graph);
-    vector <int> tSort;
-
-    vector<vector<int>> graph2 = 
-    {
-        {0, 0, 0, 1},
-        {0, 0, 0, 0},
-        {0, 1, 0, 0},
-        {0, 1, 1, 0}
-    };
-    vector <bool> visited2(graph2.size(), 0);
-    cout << "top\n";
-    toplogical(visited2, graph2, tSort, 0);
-    cout << "size = " << tSort.size() << endl;
-    for (int x : tSort)
-        cout << x << " ";
-
-    visited = vector<bool>(graph.size(), 0);
-    cout << "bfsI\n";
-    bfsI(visited, graph);
-    */
-
-
 
     //cout << "End program, enter anything...";
     //char a;
     //cin >> a;
 
-    lst1.~list();
-    lst2.~list();
+    //lst1.~list();
+    //lst2.~list();
     return 0;
 }
 // ======================================================================
@@ -529,7 +560,7 @@ void bfs(vector <bool>& visited, vector<vector<int>>& graph)
         v.pop();
         for (int i = 0; i < graph.size(); i++)
         {
-            if (graph[currV][i] && !visited[i])
+            if (graph[currV][i] != 0 && !visited[i])
                 v.push(i);
         }
     }
