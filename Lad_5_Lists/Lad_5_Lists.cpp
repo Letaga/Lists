@@ -1,4 +1,6 @@
-﻿#include <iostream>
+/*Кураева Анна*/
+
+#include <iostream>
 #include <vector>
 #include <queue>
 
@@ -271,7 +273,7 @@ int main()
     else
         cout << "Введите длину списка и его значения\n size = ";
 
-    /*size1 = EntrEdge(size1, 0, INT_MAX, language);
+    size1 = EntrEdge(size1, 0, INT_MAX, language);
     list lst1;
     list lst2;
 
@@ -326,7 +328,7 @@ int main()
     if (language)
         cout << "Removing the top element of the stack" << endl; ///=====================
     else
-        cout << "Удаление верхнего элемента стека" << endl;*/
+        cout << "Удаление верхнего элемента стека" << endl;
 
     /*lst1.sort();
     if (language)
@@ -460,9 +462,10 @@ int main()
         cout << endl;
 
         if (language)
-            cout << "Enter the values of the graph elements" << endl;
+            cout << "Enter the values of the graph elements" << endl << "It is important that the graph is cycle-free!" << endl;
         else
-            cout << "Введите значения элементов графа" << endl;
+            cout << "Введите значения элементов графа" << endl << "Важно чтобы граф был без циклов!" << endl;
+
         for (int i = 0; i < size1; i++)
         {
             cout << i + 1 << ". ";
@@ -474,7 +477,7 @@ int main()
                     cout << graph[i][j] << " ";
                     continue;
                 }
-                graph[i][j] = EntrEdge(graph[i][j], INT_MIN, INT_MAX, language);
+                graph[i][j] = EntrEdge(graph[i][j], 0, 1, language);
                 graph[j][i] = graph[i][j];
             }
             cout << endl;
@@ -493,7 +496,22 @@ int main()
             {0, 1, 1, 0}
         };
     }
-     
+    
+    //===============  graph output  ===============
+    if (language)
+        cout << "Enter the values of the graph elements" << endl;
+    else
+        cout << "\nГраф" << endl;
+    for (int i = 0; i < graph.size(); i++)
+    {
+        for (int j = 0; j < graph.size(); j++)
+        {
+            cout << graph[i][j] << " ";
+        }
+        cout << endl;
+    }
+    
+
     vector <bool> visited2(graph2.size(), 0);
     if (language)
         cout << "Topological sorting\n";
@@ -502,12 +520,12 @@ int main()
      
     toplogical(visited2, graph2, tSort, 0);
 
-    //cout << "End program, enter anything...";
-    //char a;
-    //cin >> a;
+    cout << "End program, enter anything...";
+    char a;
+    cin >> a;
 
-    //lst1.~list();
-    //lst2.~list();
+    lst1.~list();
+    lst2.~list();
     return 0;
 }
 // ======================================================================
@@ -539,11 +557,13 @@ void toplogical(vector <bool>& visited, vector<vector<int>>& graph, vector<int>&
     cout << "v = " << v << endl;
     for (int i = 0; i < graph.size(); i++)
     {
+
         if (graph[v][i] && !visited[i])
         {
             toplogical(visited, graph, tSort, i);
         }
     }
+
     tSort.push_back(v);
 }
 
